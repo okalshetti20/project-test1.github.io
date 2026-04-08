@@ -108,14 +108,20 @@ document.querySelectorAll('.ripple-btn').forEach(btn => {
   });
 });
 
-// Form validation
+// Form validation + Formspree submission
 const form = document.getElementById('contactForm');
 const feedback = document.getElementById('form-feedback');
-form?.addEventListener('submit', (e) => {
-  e.preventDefault();
+
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault(); // still prevent default to handle via fetch or let Formspree do its thing?
+  
+  // If you use action + method on <form>, you can let it submit normally.
+  // But we want custom validation and feedback. So we'll use fetch to send to Formspree.
+  
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   const message = document.getElementById('message').value.trim();
+  
   if (!name || !email || !message) {
     feedback.innerHTML = '<span style="color:#f87171;">✧ All fields are required ✧</span>';
     return;
@@ -125,9 +131,25 @@ form?.addEventListener('submit', (e) => {
     feedback.innerHTML = '<span style="color:#f87171;">✧ Please enter a valid email ✧</span>';
     return;
   }
-  feedback.innerHTML = '<span style="color:#4ade80;">✓ Message sent successfully! (Demo)</span>';
-  form.reset();
-  setTimeout(() => feedback.innerHTML = '', 3000);
+  
+  // Send to Formspree
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      feedback.innerHTML = '<span style="color:#4ade80;">✓ Message sent successfully! I\'ll get back to you soon.</span>';
+      form.reset();
+      setTimeout(() => feedback.innerHTML = '', 5000);
+    } else {
+      feedback.innerHTML = '<span style="color:#f87171;">✧ Oops! Something went wrong. Please try again.</span>';
+    }
+  } catch (error) {
+    feedback.innerHTML = '<span style="color:#f87171;">✧ Network error. Please check your connection.</span>';
+  }
 });
 
 // Particles background
