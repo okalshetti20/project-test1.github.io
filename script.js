@@ -1,6 +1,5 @@
 // Premium micro-interactions and animations
 window.addEventListener('load', () => {
-  // Custom cursor
   const cursor = document.querySelector('.custom-cursor');
   if (cursor) {
     document.addEventListener('mousemove', (e) => {
@@ -57,8 +56,8 @@ hamburger?.addEventListener('click', () => {
   navMenu.classList.toggle('active');
 });
 
-// Typing effect
-const words = ["Building the future", "Creative developer", "UI/UX enthusiast", "Design engineer"];
+// Typing effect (updated phrases)
+const words = ["Building the future", "Creative developer", "Video editor", "AI explorer", "Design thinker"];
 let wordIndex = 0, charIndex = 0, isDeleting = false;
 const typedSpan = document.getElementById('typed-text');
 function typeEffect() {
@@ -71,7 +70,7 @@ function typeEffect() {
 }
 typeEffect();
 
-// Animate progress bars on scroll
+// Animate progress bars
 const progressBars = document.querySelectorAll('.progress-fill');
 function animateProgress() {
   progressBars.forEach(bar => {
@@ -85,11 +84,11 @@ function animateProgress() {
 window.addEventListener('scroll', animateProgress);
 animateProgress();
 
-// Intersection Observer for reveal animations
+// Intersection Observer for reveal
 const revealElements = document.querySelectorAll('.section, .glass-card, .skill-item, .achievement-card, .cert-card, .project-card');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+}, { threshold: 0.1 });
 revealElements.forEach(el => { el.classList.add('reveal'); observer.observe(el); });
 
 // Ripple effect
@@ -131,7 +130,7 @@ form?.addEventListener('submit', (e) => {
   setTimeout(() => feedback.innerHTML = '', 3000);
 });
 
-// Particles background (premium floating dots)
+// Particles background
 const canvas = document.getElementById('particles-canvas');
 let ctx = canvas?.getContext('2d');
 let particles = [];
@@ -167,12 +166,16 @@ function animateParticles() {
 }
 if(canvas) { resizeCanvas(); initParticles(); animateParticles(); }
 
-// Project buttons demo
-document.querySelectorAll('.project-btn').forEach(btn => {
-  btn.addEventListener('click', () => alert('🚀 Live demo — this is a showcase portfolio.'));
+// GitHub buttons - open repositories
+document.querySelectorAll('.github-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const url = btn.getAttribute('data-url');
+    if (url) window.open(url, '_blank');
+    else alert('GitHub repository link will be added soon.');
+  });
 });
 
-// Parallax effect on hero image (micro)
+// Parallax effect on hero image
 window.addEventListener('mousemove', (e) => {
   const heroImg = document.querySelector('.profile-photo');
   if(heroImg && window.innerWidth > 768) {
